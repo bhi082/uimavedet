@@ -12,7 +12,7 @@ function allData() {
           let sijainti = "Sijainti"
   
           if (waterTemp === undefined) {
-            waterTemp = "Ei tiedossa";
+            waterTemp = "--";
           }
           if (servicemapUrl === "") {
             sijainti = ""
@@ -30,10 +30,19 @@ function allData() {
       </div>
     </div>
     </div>`;
-          elements.push(divString);
+          elements.push({name: feature.properties.name, html:divString});
         }
+                // Sort the elements alphabetically based on the "lead" text (the name)
+      elements.sort((a, b) => a.name.localeCompare(b.name));
+
+            // Extract the sorted HTML strings and join them into a single string
+            const sortedHtml = elements.map(element => element.html).join("");
+
+                  // Update the DOM with the sorted cards
+      document.getElementById("kortti").innerHTML = sortedHtml;
+
   
-        document.getElementById("kortti").innerHTML = elements.join("");
+    
       })
       .catch(function (error) {
         console.error("Virhe haettaessa dataa:", error);
@@ -42,3 +51,4 @@ function allData() {
   
   allData();
   /* <div>${i} ${feature.properties.name} ${waterTemp}</div> */
+  /* document.getElementById("kortti").innerHTML = elements.join("");*/
